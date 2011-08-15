@@ -53,16 +53,22 @@ class Calculator(QtGui.QWidget):
         if str(sender.text()).isdigit():
             self.current += sender.text()
             self.numbers.setText(self.current)
-        else:
-            if sender.text() == '=':
-                return self.calculate()
-            elif sender.text() == "Close" or sender.text() == 'Cls' or sender.text == 'Bck':
-                return None
-                #self.command(sender.text())
-            self.operator = sender.text()
-            self.numbers.setText('')
-            self.previous = self.current
-            self.current = ''
+            return None
+            
+        # If the Equals button is clicked, call the calculate method.
+        if sender.text() == '=':
+            return self.calculate()
+        
+        # If one of these buttons is clicked, perform the necessary operation
+        if sender.text() == "Close" or sender.text() == 'Cls' or sender.text == 'Bck':
+            return None
+            #self.command(sender.text())
+            
+        # By this time, we're sure that only the operator buttons are clicked.  Just reset the text box, and save the current operation.
+        self.operator = sender.text()
+        self.previous = self.numbers.text()
+        self.numbers.setText('')
+        self.current = ''
     
     def calculate(self):
         if self.operator == '+':
@@ -73,7 +79,7 @@ class Calculator(QtGui.QWidget):
             result = int(self.previous) * int(self.current)
         elif self.operator == '/':
             result = int(self.previous) - int(self.current)
-        
+
         self.numbers.setText(str(result))
 
 
