@@ -60,9 +60,9 @@ class Calculator(QtGui.QWidget):
             return self.calculate()
         
         # If one of these buttons is clicked, perform the necessary operation
-        if sender.text() == "Close" or sender.text() == 'Cls' or sender.text == 'Bck':
+        if sender.text() == "Close" or sender.text() == 'Cls' or sender.text() == 'Bck':
+            self.command(sender.text())
             return None
-            #self.command(sender.text())
             
         # By this time, we're sure that only the operator buttons are clicked.  Just reset the text box, and save the current operation.
         self.operator = sender.text()
@@ -81,7 +81,21 @@ class Calculator(QtGui.QWidget):
             result = int(self.previous) - int(self.current)
 
         self.numbers.setText(str(result))
-
+        
+    def command(self, command):
+        if command == 'Close':
+            sys.exit()
+            return None
+        if command == 'Cls':
+            self.numbers.setText('')
+            self.previous = ''
+            self.current = ''
+            self.operator = ''
+            return None
+        if command == 'Bck':
+            self.current = self.current[0:-1]
+            self.numbers.setText(self.current)
+        return None
 
 app = QtGui.QApplication(sys.argv)
 ex = Calculator()
