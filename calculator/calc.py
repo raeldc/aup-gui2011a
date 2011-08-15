@@ -6,8 +6,11 @@
 import sys
 from PyQt4 import QtGui, QtCore
 
-
 class Calculator(QtGui.QWidget):
+    
+    previous = ''
+    current = ''
+    operator = ''
   
     def __init__(self):
         super(Calculator, self).__init__()
@@ -46,8 +49,33 @@ class Calculator(QtGui.QWidget):
 
     def buttonClicked(self):
         sender = self.sender()
-        self.numbers.setText(sender.text())
+        # If the pushed button contains a numeric value, append it to the current value
+        if str(sender.text()).isdigit():
+            self.current += sender.text()
+            self.numbers.setText(self.current)
+        else:
+            if sender.text() == '=':
+                return self.calculate()
+            elif sender.text() == "Close" or sender.text() == 'Cls' or sender.text == 'Bck':
+                return None
+                #self.command(sender.text())
+            self.operator = sender.text()
+            self.numbers.setText('')
+            self.previous = self.current
+            self.current = ''
+    
+    def calculate(self):
+        if self.operator == '+':
+            result = int(self.previous) + int(self.current)
+        elif self.operator == '-':
+            result = int(self.previous) - int(self.current)
+        elif self.operator == '*':
+            result = int(self.previous) * int(self.current)
+        elif self.operator == '/':
+            result = int(self.previous) - int(self.current)
         
+        self.numbers.setText(str(result))
+
 
 app = QtGui.QApplication(sys.argv)
 ex = Calculator()
